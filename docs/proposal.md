@@ -40,6 +40,6 @@ As a "moonshot," we hope to have our AI place down the set of torch items in an 
 - Two rooms, one large and small, which could all be lit up if torches were only placed in the large room.
 - Two rooms, one large and small, separated by a door, which could only be lit up if torches were in each room.
 
-## Proposal Date and Time:
+## Appointment Date and Time:
 
-TBA -- not all members have announced availability as of 1:52 P.M. PST, April 21st, 2017.
+<b>May 1st, 2017 at 3:00 P.M.</b>
