@@ -9,5 +9,5 @@ title:  Team Torchlight
 ## LUCAS AMUTAN
 ***UCI Net ID***: lamutan
 
-## Ruidong DAI
+## RUIDONG DAI
 ***UCI Net ID***: ruidongd
