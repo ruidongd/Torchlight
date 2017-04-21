@@ -1,16 +1,13 @@
 ---
 layout: default
-title:  Team
+title:  Team Torchlight
 ---
 
 # {{ page.title }}
 
 
-## USER 1
+## LUCAS AMUTAN
 ***UCI Net ID***: lamutan
 
-## USER 2
+## Ruidong DAI
 ***UCI Net ID***: ruidongd
-
-## USER 3
-***UCI Net ID***: ucinetid
