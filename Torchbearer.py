@@ -9,8 +9,6 @@ import math
 import errno
 from timeit import default_timer as timer
 
-sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
-
 trial6x6 = 	'''	
 	<DrawingDecorator>
 		<DrawCuboid x1="0" y1="39" z1="0" x2="5" y2="39" z2="5" type="obsidian"/>
@@ -109,25 +107,26 @@ class Torchbearer(object):
 		# Finds center of trial
 		retX = math.floor(x/2)
 		retZ = math.floor(z/2)
-		return (retX, retZ)
+		return (int(retX), int(retZ))
 
 	def teleport(self, agent_host, teleport_x, teleport_z):
 		"""Directly teleport to a specific position."""
+		print ("Attempting teleport to",str(teleport_x),str(teleport_z))
 		tp_command = "tp " + str(teleport_x)+ " 40 " + str(teleport_z)
 		agent_host.sendCommand(tp_command)
-		good_frame = False
-		start = timer()
-		while not good_frame:
-			world_state = agent_host.getWorldState()
-		if not world_state.is_mission_running:
-			print ("Mission ended prematurely - error.")
-			exit(1)
-		if not good_frame and world_state.number_of_video_frames_since_last_state > 0:
-			frame_x = world_state.video_frames[-1].xPos
-			frame_z = world_state.video_frames[-1].zPos
-			if math.fabs(frame_x - teleport_x) < 0.001 and math.fabs(frame_z - teleport_z) < 0.001:
-				good_frame = True
-				end_frame = timer()
+		# good_frame = False
+		# start = timer()
+		# while not good_frame:
+			# world_state = agent_host.getWorldState()
+			# if not world_state.is_mission_running:
+				# print ("Mission ended prematurely - error.")
+				# exit(1)
+			# if not good_frame and world_state.number_of_video_frames_since_last_state > 0:
+				# frame_x = world_state.video_frames[-1].xPos
+				# frame_z = world_state.video_frames[-1].zPos
+				# if math.fabs(frame_x - teleport_x) < 0.001 and math.fabs(frame_z - teleport_z) < 0.001:
+					# good_frame = True
+					# end_frame = timer()
 		self.position = (teleport_x, teleport_z)
 
 # Create default Malmo objects:
@@ -172,6 +171,8 @@ if __name__ == '__main__':
 
 		my_mission = MalmoPython.MissionSpec(GetMissionXML(trial), True)
 		my_mission_record = MalmoPython.MissionRecordSpec()
+		my_mission.requestVideo(800, 500)
+		my_mission.setViewpoint(0)
 		
 
 		# Attempt to start a mission:
@@ -200,28 +201,26 @@ if __name__ == '__main__':
 		print
 		print "Mission running ",
 		
+		world_state = agent_host.getWorldState()
+		for error in world_state.errors:
+			print "Error:",error.text
+		
 		center = torchbearer.findCenter(num, num)
-		torchbearer.teleport(agent_host, center[0], center[1])
+		print("Are we running?",world_state.is_mission_running)
+		torchbearer.teleport(agent_host, 4, 4)
 
-		while world_state.is_mission_running:
-			sys.stdout.write(".")
-			#time.sleep(0.1)
-			agent_host.sendCommand("pitch 1")
-			time.sleep(1.0)
+		agent_host.sendCommand("pitch 0.5")
+		print("Trying to look down")
+		time.sleep(5.0)
 
-
-			world_state = agent_host.getWorldState()
-			for error in world_state.errors:
-				print "Error:",error.text
-
-			# Check Torchbearer for list of light levels; quit if all are 8 or lower.
-			lit = True;
-			for i in torchbearer.currentList:
-				for j in i:
-					if(j < 8):
-						lit = False
-			if(lit):
-				break
-				
-			# DEBUG BREAK
+		# Check Torchbearer for list of light levels; quit if all are 8 or lower.
+		lit = True;
+		for i in torchbearer.currentList:
+			for j in i:
+				if(j < 8):
+					lit = False
+		if(lit):
 			break
+			
+		# DEBUG BREAK
+		break
