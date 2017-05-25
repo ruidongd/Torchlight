@@ -21,6 +21,7 @@ An example of how far torchlight extends based on "taxicab" distance. Each torch
 ## Other links:
 
 The Torchlight repository: https://github.com/Raustana/Torchlight
+An explanation of light levels in Minecraft: http://minecraft.gamepedia.com/Light
 
 
 <!--_Add your text here_ -->
