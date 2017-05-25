@@ -5,13 +5,13 @@ title: Proposal
 
 As stated before:
 
-# The goal of the Lightbearer AI is to provide a safe area for players within a Minecraft world.
+# The goal of the Torchbearer AI is to provide a safe area for players within a Minecraft world.
 
 What this means is simple: In terms of gameplay, players' main antagonists are the monsters of their worlds. These monsters spawn when the light level of a given area is too dark, such as when the sun goes down.
 
 To counteract this, players place down torches (and other light sources) to increase the light level of their surroundings.
 
-The Lightbearer AI, when given a space to observe, predict, and react to, will read its surroundings and their predicted light level once nightfall hits and then place torches down in a pattern that will prevent monsters spawning in that area.
+The Torchbearer AI, when given a space to observe, predict, and react to, will read its surroundings and their predicted light level once nightfall hits and then place torches down in a pattern that will prevent monsters spawning in that area.
 
 ## AI and ML Algorithms
 
