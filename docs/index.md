@@ -14,7 +14,7 @@ The more detailed version of this is included in the Status section of the site,
 - With knowledge of how far Minecraft torchlight reaches -- 4 squares away from the torch -- we can piece together certain positions that allow the light to cover the most area on the square. 
 - Because the light expands away from the torch in "taxicab" distance, we know very specifically how many torches are needed per square area, reducing the need to look into "inefficient" combinations that use more torches than necessary.)
 
-![Torchlight is determined by "taxicab" distance](https://cloud.githubusercontent.com/assets/6045033/26470930/5d00fa42-4154-11e7-98ac-bd4d14b0fc5f.PNG)
+![Torchlight is determined by "taxicab" distance](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/Torch_light.PNG)
 
 An example of how far torchlight extends based on "taxicab" distance. Each torch "T" has light level 14; hostile mobs spawn at light level 7 or below.
 
