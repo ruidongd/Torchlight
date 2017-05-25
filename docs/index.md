@@ -9,7 +9,16 @@ This is the project page for the Lightbearer AI project, based off Malmo-Minecra
 
 The goal of the Lightbearer AI is to automatically determine the light level of its surroundings and place torches accordingly so no hostile monsters spawn within the area.
 
-Navigation can be found at the top of the page.
+The more detailed version of this is included in the Status section of the site, but basically: 
+- A square area is passed to the A.I. 
+- With knowledge of how far Minecraft torchlight reaches -- 4 squares away from the torch -- we can piece together certain positions that allow the light to cover the most area on the square. 
+- Because the light expands away from the torch in "taxicab" distance, we know very specifically how many torches are needed per square area, reducing the need to look into "inefficient" combinations that use more torches than necessary.)
+
+## Other links:
+
+The Torchlight repository: https://github.com/Raustana/Torchlight
+
+
 <!--_Add your text here_ -->
 
 <!-- What's Markdown (`.md`)? -->
