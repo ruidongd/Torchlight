@@ -5,9 +5,9 @@ title:  Home
 
 # Welcome!
 
-This is the project page for the Lightbearer AI project, based off Malmo-Minecraft for UCI's CS175 AI Project!
+This is the project page for the Torchbearer AI project, based off Malmo-Minecraft for UCI's CS175 AI Project!
 
-The goal of the Lightbearer AI is to automatically determine the light level of its surroundings and place torches accordingly so no hostile monsters spawn within the area.
+The goal of the Torchbearer AI is to automatically determine the light level of its surroundings and place torches accordingly so no hostile monsters spawn within the area.
 
 The more detailed version of this is included in the Status section of the site, but basically: 
 - A square area is passed to the A.I. 
