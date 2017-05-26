@@ -37,7 +37,7 @@ Our baseline test -- a 6x6 grid -- works like this:
     - The new light level of that specific coordinate is equal to **"initialNum - tryNum"** unless said light level would be lower than it currently is.
   - After placing all of its torches within the combination it is testing, the agent then "scores" the combination based on how many squares remain in the grid that have a light level of 7 or below. This score is named **"dark"**.
   - The combination is then placed into a dictionary **"scoredList"**, which has a variety of numeric keys and a list value. The combination is appended to the list with key **"dark"**; if that key does not exist, a new key is created with its value containing the combination.
-    - An example of the "scoredList" would be scoredList[1] == [(2,0), (4,5)].
+    - An example of the **"scoredList"** would be **scoredList[1] == [(2,0), (4,5)]**.
   - The agent then wipes the board of all torches and begins the next test.
 - After testing and scoring each coordinate in **"startingList"**, the program runs over each score in **"scoredList"** that has a list of coordinates (or a len > 0). If that score is the lowest so far, it updates a variable "lowest" to keep track of the list.
 - Finally, the program runs over the list of the lowest scoring combinations, printing each one to show the optimal combinations to place torches to light up the grid (in this case: (2, 2), (3, 2), (2, 3), (3, 3)).
