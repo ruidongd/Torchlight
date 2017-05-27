@@ -16,7 +16,7 @@ The more detailed version of this is included in the Status section of the site,
 
 ![Torchlight is determined by "taxicab" distance](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/Torch_light.PNG)
 
-An example of how far torchlight extends based on "taxicab" distance. Each torch "T" has light level 14; hostile mobs spawn at light level 7 or below. (http://minecraft.gamepedia.com/Light)
+An example of how far torchlight extends based on "taxicab" distance. Each torch "T" has light level 14; hostile mobs spawn at light level 7 or below. (http://minecraft.gamepedia.com/Light#Sources_of_light)
 
 ## Other links:
 
