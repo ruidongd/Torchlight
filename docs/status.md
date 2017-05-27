@@ -9,7 +9,7 @@ TODO: VIDEO HERE
 
 ## Project Summary:
 
-The Torchbearer A.I. has changed somewhat from our previous idea, in that its algorithms are not necessarily the same. Instead of randomly running down the series of coordinates given to it, hoping to find a good coordinate to jump off of, the A.I. now knows that an optimal solution is n-coordinates large; thus, it tries some (if not all) of the n-coordinate tests to see if it can come up with an optimal solution.
+The Torchbearer A.I. has changed somewhat from our previous idea, in that its algorithms are not necessarily the same. Instead of randomly running down the series of coordinates given to it, hoping to find a good coordinate to jump off of, the A.I. now knows that an optimal solution is n-coordinates large; thus, it tries some (if not all) of the n-coordinate combinations to see if it can come up with an optimal solution.
 
 The goal of the A.I. is largely the same (in a grid nXn size, place just enough torches to light up the area), but two potential new goals include:
 - Run the A.I. on grids with walls. This will effectively create two grids from one, as well as add an additional coordinate required to the n-coordinate optimal solution, but allows us to more accurately light up areas resembling actual rooms in Minecraft.
