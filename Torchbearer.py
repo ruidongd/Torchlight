@@ -12,6 +12,7 @@ from timeit import default_timer as timer
 
 trial6x6 = 	'''	
 	<DrawingDecorator>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
 		<DrawCuboid x1="0" y1="39" z1="0" x2="5" y2="39" z2="5" type="obsidian"/>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
 	</DrawingDecorator>
@@ -19,6 +20,7 @@ trial6x6 = 	'''
 
 trial8x8 = 	'''	
 	<DrawingDecorator>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
 		<DrawCuboid x1="0" y1="39" z1="0" x2="7" y2="39" z2="7" type="obsidian"/>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
 	</DrawingDecorator>
@@ -26,8 +28,25 @@ trial8x8 = 	'''
 
 trial10x10 = 	'''	
 	<DrawingDecorator>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
 		<DrawCuboid x1="0" y1="39" z1="0" x2="9" y2="39" z2="9" type="obsidian"/>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
+	</DrawingDecorator>
+	'''
+	
+def CreateTrial( n , startingCoordinates):
+	# Creates an nXn square. Erases ground level and one above; rewrites with obsidian.
+	"""
+	Args:
+				n:						<int>	How big the square is.
+				startingCoordinates:	<tuple(int, int)>	Where the square begins. This is important if we are to make multi-grid tests.
+	"""
+	
+	return '''
+	<DrawingDecorator>
+		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="39" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="39" z2="''' + str(n - 1) + '''" type="air"/>
+		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="40" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="40" z2="''' + str(n - 1) + '''" type="air"/>
+		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="39" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="39" z2="''' + str(n - 1) + '''" type="obsidian"/>
 	</DrawingDecorator>
 	'''
 
@@ -82,15 +101,19 @@ class Torchbearer(object):
 			trialsize:	<int>	The size of the square that the AI will iterate over, as an nXn square.
 			doable:		<int>	The minimum amount of torches the trial can be done in.
 		"""
+		
+		# NOTE: A majority of this code is deprecated, but remains as a back up if our new code fails.
+		# See "V 1.0" at the bottom.
+		
 		self.currentList = [] # What our current light levels are at.
-		self.startList = [] # What coordinates we have already tried.
+		self.startList = [] # What coordinates we start with.
+		
 		for i in range(trialsize):
-			self.currentList.append([0]*trialsize)
+			currentList.append([0]*trialsize)
 			for j in range(trialsize):
 				self.startList.append((i,j))
-				
 		
-		self.startList = self.doableList(doable, self.startList)
+		self.startList = self.doableList(doable, self.startList) # Create a list of coordinates to do. DOES NOT WORK WITH V 1.0.
 		
 		self.triedList = []
 		self.bestList = []
@@ -101,9 +124,10 @@ class Torchbearer(object):
 		self.currentTorches = []
 		self.worst = []
 		
+		# Create a set of scores -- 
 		self.scoredList = dict()
 		for i in range(15):
-			self.scoredList[i] = []
+			self.scoredList[i] = [] 
 		
 		#currentList = list of light levels of the CURRENT mission
 		#triedList = list of coordinates we have TRIED already, as a list of combinations/final (x,z) coordinates 
@@ -136,7 +160,9 @@ class Torchbearer(object):
 			for a,b in enumerate(j): # a = index of x; b = number at x
 				disX = abs(self.position[0] - a)
 				tryNum = initialNum - (disX + disY) # Taxi Cab distance
-				if(b < tryNum):
+				if(b > 14): # WALL IMPLEMENTATION
+					break
+				elif(b < tryNum): # The coordinate is closer than 14 squares away, but is darker than it would be if a torch was placed down.
 					j[a] = tryNum
 		return
 
@@ -200,10 +226,11 @@ if __name__ == '__main__':
 		print agent_host.getUsage()
 		exit(0)
 
+	num = 6
 	#
 	#
-	#Allowed trials: trial6x6, trial8x8, trial10x10
-	trial = trial6x6
+	#Allowed preset trials: trial6x6, trial8x8, trial10x10
+	trial = CreateTrial(num, (0,0))
 	#
 	#
 	
@@ -226,7 +253,6 @@ if __name__ == '__main__':
 	
 	# Essentially: take your nXn matrix, divide by 2, round down, subtract 2, and that's how much your doable is.
 	
-	num = 0
 	doable = 0
 	if(trial == trial6x6):
 		num = 6
@@ -243,7 +269,7 @@ if __name__ == '__main__':
 	torchbearer = Torchbearer(num, doable)
 	print("Trial size: {} x {}".format(num, num))
 	# Initialize breaking point, where there's "too many torches"
-	breaker = 5
+	breaker = 10
 
 	for iRepeat in range(num_reps):
 
@@ -297,10 +323,6 @@ if __name__ == '__main__':
 
 		# Check Torchbearer for list of light levels; quit if all are 8 or lower.
 		
-		#															#
-		#			V 1.0, without doablelist implemented!			#
-		#															#
-		
 		if(len(torchbearer.startList) > 0):
 			tryThis = torchbearer.startList[0] # tryThis is a list of 2-tuples/coordinates.
 			for a in tryThis:	# Each a is a coordinate.
@@ -315,10 +337,17 @@ if __name__ == '__main__':
 					if(y < 8):
 						dark += 1
 			# print(dark)
-			torchbearer.scoredList[dark].append(tryThis)
+			if(dark in torchbearer.scoredList):
+				torchbearer.scoredList[dark].append(tryThis)
+			else:
+				torchbearer.scoredList[dark] = [tryThis]
 			# print(torchbearer.scoredList)
 			torchbearer.startList.remove(torchbearer.startList[0])
 			torchbearer.clearSelf()
+			
+		#															#
+		#			V 1.0, without doablelist implemented!			#
+		#															#
 		
 		'''
 		# Start at this location first; technically iterating over the whole list, slowly.
@@ -435,13 +464,21 @@ if __name__ == '__main__':
 		agent_host.sendCommand("quit")
 		time.sleep(0.1)
 		
-	for i in range(15):
-		if(len(torchbearer.scoredList[i]) > 0):
-			torchbearer.bestList.extend(torchbearer.scoredList[i])
-			break
+	lowest = None
+		
+	for i in torchbearer.scoredList: # First iterate to find the lowest score in torchbearer.scoredList and if it contains coordinates.
+		if((lowest == None or i < lowest) and len(torchbearer.scoredList[i]) > 0):
+			lowest = i
+	for i in torchbearer.scoredList[lowest]: # Then iterate over the list of scoredList at the lowest score.
+		torchbearer.bestList.extend(i)
+		break
+	print("Best Coordinates:")
 	for i in torchbearer.bestList:
 		print(i)
 		
+	print("Scores:")
+	for i in torchbearer.scoredList:
+		print("{} dark squares: {}".format(i,torchbearer.scoredList[i])
 		'''
 	# Iterate twice: once to check for the lowest length amongst solutions, the other to add them.
 	# print(torchbearer.worst)
