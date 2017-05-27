@@ -43,7 +43,7 @@ Our baseline test -- a 6x6 grid -- works like this:
     - An example of the **"scoredList"** would be **scoredList[1] == [[(1, 2)], [(1, 3)], [(2, 1)], [(2, 4)], [(3, 1)], [(3, 4)], [(4, 2)], [(4, 3)]]**.
   - The agent then wipes the board of all torches and begins the next test.
 - After testing and scoring each coordinate in **"startingList"**, the program runs over each score in **"scoredList"** that has a list of coordinates (or a len > 0). If that score is the lowest so far, it updates a variable "lowest" to keep track of the list.
-- Finally, the program runs over the list of the lowest scoring combinations, printing each one to show the optimal combinations to place torches to light up the grid (in this case: (2, 2), (3, 2), (2, 3), (3, 3)), as well as the entirety of **"scoredList"** for viewing purposes.
+- Finally, the program runs over the list of the lowest scoring combinations, printing each one to show the optimal combinations to place torches to light up the grid (in this case: (2, 2), (2, 3), (3, 2), (3, 3)), as well as the entirety of **"scoredList"** for viewing purposes.
 - ![image for scoredList goes here](url for image goes here)
 
 SCREENSHOTS GO HERE.
