@@ -3,6 +3,10 @@ layout: default
 title: Status
 ---
 
+# VIDEO:
+
+TODO: VIDEO HERE
+
 ## Project Summary:
 
 The Torchbearer A.I. has changed somewhat from our previous idea, in that its algorithms are not necessarily the same. Instead of randomly running down the series of coordinates given to it, hoping to find a good coordinate to jump off of, the A.I. now knows that an optimal solution is n-coordinates large; thus, it tries some (if not all) of the n-coordinate tests to see if it can come up with an optimal solution.
@@ -53,10 +57,53 @@ Our baseline test -- a 6x6 grid -- works like this:
 - ![image for scoredList goes here](url)
 - ![in-game image goes here](url)
 
-SCREENSHOTS GO HERE.
+## Evaluation
 
-TODO: EVALUATION
+Our evaluation goals were straightforward:
+1. Can the A.I. navigate a given grid?
+2. Can the A.I. light up that grid properly?
+3. Can the A.I. navigate and light up the grid in a timely manner?
 
-TODO: VIDEO HERE
+By utilizing code from CS 175's Assignment #2, we were able to set up our agent to teleport to given coordinates (x, z) easily. With the "taxicab" function, we also set up an simple way to update the light levels of a current grid if a torch was placed at coordinate (x, z). Malmo's agent functions allowed us to simulate our grids in the Minecraft space, having the agent look down and place a torch (in Creative mode) to visually represent our light levels.
 
-TODO: REMAINING GOALS AND CHALLENGES
+We learned quickly that while the first and second terms were easily accomplished, the third was much, much harder to achieve. The algorithm we utilize takes up vastly larger amounts of time and memory for every two increments on the nXn square:
+- A 6x6 grid only checks 36 1-size combinations.
+- A 7x7 grid only checks 49 1-size combinations.
+- An 8x8 grid checks *2016* 2-size combinations.
+
+Eventually, our algorithm can solve that 8x8 square (in fact it is possible to solve by hand), but it will take an incredibly long time to do so (approximately an hour). Our issue is that it checks every solution and not the best ones (e.g. placing two torches directly next to each other).
+
+![images showing possible solution to 8x8 grid](url)
+
+While optimization is a major issue, there is no doubt that the program works. The function determining current lighting is simple, only having to iterate over nXn numbers and update them if they would grow brighter. Each test only takes about two seconds of real time, and most of that is on the agent taking a half-second to look down in the Minecraft client and Malmo's "world_state waiting" function that is standard within Malmo projects (the line stating "while not world_state.has_mission_begun" that is in *all* Malmo projects).
+
+Grid 5x5:
+![image of solution 5x5 here](url)
+
+Grid 6x6:
+![image of solution 6x6 here](url)
+
+Grid 7x7:
+![image of solution 7x7 here](url)
+
+## Remaining Goals and Challenges
+
+Our current goal is optimizing the algorithm. Mathematically the algorithm is sound, but each solution is checked one by one, which quickly becomes inefficient and time-consuming. Checking 1-sized combinations is efficient as we only have to worry about nXm positions (the **m** is an important distinction here, discussed below). 2-sized combinations (8x8 and 9x9) become daunting as all possible combinations become 2016 and 3240, respectively; and a 3-sized combination of a 10x10 grid has 161700 combinations to check!
+
+A way to break down our problem, as mentioned above, is to use submodular optimization:
+- The 10x10 grid can easily be broken down if we take out one large 7x7 grid that we know is covered by the light cast from a single torch. 
+- This reduces the grid we have to scan from 100 positions to 51 positions, and the amount of torches to consider from 3 to 2. 
+- The amount of combinations in a 51C2 is 1275, a much more manageable amount compared to 161700. 
+- This solution can be further broken down into two rectangles (specifically 3x10 and 3x7), allowing us to only have to worry about 30 and 21 positions and to consider only 1 torch for each grid. 
+  - 30C1 and 21C1 (30 and 21...) are even smaller compared to 1275!
+
+This process has to be followed 3 more times (each "corner" of the grid that fits a 7x7 square), for a total of (4 * (30 + 21 + 1)) = 204 solutions to check. Much easier than 1275, and much, much easier than 161700.
+
+Grid 10x10:
+![image of 10x10](url)
+
+Grid 10x10 with 7x7 removed:
+![image of 10x10-7x7](url)
+
+Grids 3x10 and 3x7:
+![images of 3x10 and 3x7](url)
