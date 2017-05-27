@@ -13,9 +13,9 @@ The Torchbearer A.I. has changed somewhat from our previous idea, in that its al
 
 The goal of the A.I. is largely the same (in a grid nXn size, place just enough torches to light up the area), but two potential new goals include:
 - Run the A.I. on grids with walls. This will effectively create two grids from one, as well as add an additional coordinate required to the n-coordinate optimal solution, but allows us to more accurately light up areas resembling actual rooms in Minecraft.
-- ![image of walled grid](url)
+- ![image of walled grid](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/WalledGrid.PNG)
 - Run the A.I. on non-uniform patterns -- L-shapes, T-shapes, long I-shapes, U-shapes. This will give us a two additional problems to solve: non-uniform grids do not have the benefit of centralized solutions, where torches can be placed in the middle to cover the whole area; and we, as programmers, must determine what optimal solutions exist per non-uniform pattern. Once again, these patterns will more accurately resemble rooms that are actually built in Minecraft.
-- ![image of odd grid](url)
+- ![image of odd grid](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/LGrid.PNG)
 
 Of course, these goals are rather lofty, as there are many more variables to consider outside of our simple grid system (how far does the wall go to block light? Can we make multiple grids for the A.I. to accurately travel on?), and we still have some issues to iron out before then. Still, they are things to consider as we go along with the project.
 
@@ -28,7 +28,7 @@ All of this is done with a brute-force method, iterating over the whole list of 
 Our baseline test -- a 6x6 grid -- works like this:
 - The minimum amount of torches is determined by the torches' reach.
   - In this case: a 6x6 grid fits into a single torch's light.
-  - ![image showing square goes here](url)
+  - ![image showing square goes here](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/OneTorch6x6Solution.PNG)
   - Mathematically, the minimum amount of torches needed is: 
     - int(math.floor(number/2)-2). 
   - In this case: 6/2 = 3; 3-2 = 1.
