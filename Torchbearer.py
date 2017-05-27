@@ -12,25 +12,25 @@ from timeit import default_timer as timer
 
 trial6x6 = 	'''	
 	<DrawingDecorator>
-		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
-		<DrawCuboid x1="0" y1="39" z1="0" x2="5" y2="39" z2="5" type="obsidian"/>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="5" y2="39" z2="5" type="obsidian"/>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
 	</DrawingDecorator>
 	'''
 
 trial8x8 = 	'''	
 	<DrawingDecorator>
-		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
-		<DrawCuboid x1="0" y1="39" z1="0" x2="7" y2="39" z2="7" type="obsidian"/>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="7" y2="39" z2="7" type="obsidian"/>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
 	</DrawingDecorator>
 	'''
 
 trial10x10 = 	'''	
 	<DrawingDecorator>
-		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
-		<DrawCuboid x1="0" y1="39" z1="0" x2="9" y2="39" z2="9" type="obsidian"/>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="9" y2="39" z2="9" type="obsidian"/>
+		<DrawCuboid x1="0" y1="39" z1="0" x2="15" y2="39" z2="15" type="air"/>
 	</DrawingDecorator>
 	'''
 	
@@ -44,8 +44,8 @@ def CreateTrial( n , startingCoordinates):
 	
 	return '''
 	<DrawingDecorator>
-		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="39" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="39" z2="''' + str(n - 1) + '''" type="air"/>
 		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="40" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="40" z2="''' + str(n - 1) + '''" type="air"/>
+		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="39" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="39" z2="''' + str(n - 1) + '''" type="air"/>
 		<DrawCuboid x1="''' + str(startingCoordinates[0]) + '''" y1="39" z1="''' + str(startingCoordinates[1]) + '''" x2="''' + str(n - 1) + '''" y2="39" z2="''' + str(n - 1) + '''" type="obsidian"/>
 	</DrawingDecorator>
 	'''
@@ -109,7 +109,7 @@ class Torchbearer(object):
 		self.startList = [] # What coordinates we start with.
 		
 		for i in range(trialsize):
-			currentList.append([0]*trialsize)
+			self.currentList.append([0]*trialsize)
 			for j in range(trialsize):
 				self.startList.append((i,j))
 		
@@ -124,10 +124,8 @@ class Torchbearer(object):
 		self.currentTorches = []
 		self.worst = []
 		
-		# Create a set of scores -- 
+		# Create a dict of scores -- 
 		self.scoredList = dict()
-		for i in range(15):
-			self.scoredList[i] = [] 
 		
 		#currentList = list of light levels of the CURRENT mission
 		#triedList = list of coordinates we have TRIED already, as a list of combinations/final (x,z) coordinates 
@@ -262,7 +260,7 @@ if __name__ == '__main__':
 		num = 10
 		
 	doable = int(math.floor(num/2)-2)
-	num_reps = min(num**2, 500)
+	num_reps = min(num**2, 500) + 1
 	# num_reps = 10
 
 	# Initialize torchbearer with trial size (num)
@@ -321,164 +319,176 @@ if __name__ == '__main__':
 		# torchbearer.teleport(agent_host, center[0], center[1])
 		# torchbearer.placeTorch(agent_host)
 
-		# Check Torchbearer for list of light levels; quit if all are 8 or lower.
+		# If this is not the "victory lap":
+		if(iRepeat != num_reps - 1):
 		
-		if(len(torchbearer.startList) > 0):
-			tryThis = torchbearer.startList[0] # tryThis is a list of 2-tuples/coordinates.
-			for a in tryThis:	# Each a is a coordinate.
-				torchbearer.teleport(agent_host,a[0],a[1])
-				torchbearer.placeTorch(agent_host)
-			# print(torchbearer.currentList)
-			dark = 0
-			for x in torchbearer.currentList: # For each list in the list of lists...
-				# print(x)
-				for y in x: # For each number in the list...
-					# print(y)
-					if(y < 8):
-						dark += 1
-			# print(dark)
-			if(dark in torchbearer.scoredList):
-				torchbearer.scoredList[dark].append(tryThis)
-			else:
-				torchbearer.scoredList[dark] = [tryThis]
-			# print(torchbearer.scoredList)
-			torchbearer.startList.remove(torchbearer.startList[0])
-			torchbearer.clearSelf()
-			
-		#															#
-		#			V 1.0, without doablelist implemented!			#
-		#															#
-		
-		'''
-		# Start at this location first; technically iterating over the whole list, slowly.
-		if(len(torchbearer.startList) > 0):
-			coordinate = torchbearer.startList[0]
-			torchbearer.teleport(agent_host, coordinate[0], coordinate[1])
-			torchbearer.placeTorch(agent_host)
-			torchbearer.startList.remove(coordinate)
-		
-		
-
-		
-		# The current run's torchbearing.
-		while True:
-			dark = False;
-			for i in torchbearer.currentList:
-				for j in i:
-					if(j < 8): # 8 is light level that will respawn
-						dark = True
-
-			# SUCCESS!
-			if(not dark):
-				endList = []
-				for i,j in enumerate(torchbearer.currentList): # i is index, j is list
-					for a,b in enumerate(j): # a is index, b is number
-						if(b == 14):
-							endList.append((a, i))
-				#
-				# TODO: check if the list is already tried.
-				# If it isn't, we should add it.
-				if(sorted(endList) not in torchbearer.triedList):
-					torchbearer.triedList.append(sorted(endList))
-					print("The area is alight!")
-				else:
-					print("Already tried this solution.")
+			# Check Torchbearer for list of light levels; quit if all are 8 or lower.
+			if(len(torchbearer.startList) > 0):
+				tryThis = torchbearer.startList[0] # tryThis is a list of 2-tuples/coordinates.
+				for a in tryThis:	# Each a is a coordinate.
+					torchbearer.teleport(agent_host,a[0],a[1])
+					torchbearer.placeTorch(agent_host)
 				# print(torchbearer.currentList)
-				#
-				# Check if this tried but valid list is the longest so far
-				# Really only works on the initial run.
-				if(len(endList) > len(torchbearer.worst)):
-					torchbearer.worst = endList
+				dark = 0
+				for x in torchbearer.currentList: # For each list in the list of lists...
+					# print(x)
+					for y in x: # For each number in the list...
+						# print(y)
+						if(y < 8):
+							dark += 1
+				# print(dark)
+				if(dark in torchbearer.scoredList):
+					torchbearer.scoredList[dark].append(tryThis)
+				else:
+					torchbearer.scoredList[dark] = [tryThis]
+				# print(torchbearer.scoredList)
+				torchbearer.startList.remove(torchbearer.startList[0])
 				torchbearer.clearSelf()
-				break
+				
+			#															#
+			#			V 1.0, without doablelist implemented!			#
+			#															#
+			
+			'''
+			# Start at this location first; technically iterating over the whole list, slowly.
+			if(len(torchbearer.startList) > 0):
+				coordinate = torchbearer.startList[0]
+				torchbearer.teleport(agent_host, coordinate[0], coordinate[1])
+				torchbearer.placeTorch(agent_host)
+				torchbearer.startList.remove(coordinate)
+			
+			
 
-			# DARK SPACES!
-			# Currently, we place a torch on the squares with the LOWEST light level.
-			# We need to expand it so it checks ALL squares, to find the best solutions.
-			# For example: the 8x8 trial has the best solutions in a set of pairs, where each coordinate is adjacent to the center squares but diagonally opposite to the other:
-			#		0	0
-			#	T	C	C	0
-			#	0	C	C	T
-			#		0	0
-			# This fills the entire space with light, in the least amount of torches.
-			# As was given to us, though, the whole problem is O(n^3), and that gets out of hand SUPER fast.
-			else:
-				# Iterate twice: once to check for the amount of lowest light levels, the other time to add them.
-				darkList = []
-				lowest = 14
+			
+			# The current run's torchbearing.
+			while True:
+				dark = False;
 				for i in torchbearer.currentList:
 					for j in i:
-						if(j < lowest):
-							lowest = j
-				for i,j in enumerate(torchbearer.currentList): # i is index, j is list
-					for a,b in enumerate(j): # a is index, b is number
-						if(b == lowest):
-							darkList.append((a,i))
-			# print(darkList)
+						if(j < 8): # 8 is light level that will respawn
+							dark = True
+
+				# SUCCESS!
+				if(not dark):
+					endList = []
+					for i,j in enumerate(torchbearer.currentList): # i is index, j is list
+						for a,b in enumerate(j): # a is index, b is number
+							if(b == 14):
+								endList.append((a, i))
+					#
+					# TODO: check if the list is already tried.
+					# If it isn't, we should add it.
+					if(sorted(endList) not in torchbearer.triedList):
+						torchbearer.triedList.append(sorted(endList))
+						print("The area is alight!")
+					else:
+						print("Already tried this solution.")
+					# print(torchbearer.currentList)
+					#
+					# Check if this tried but valid list is the longest so far
+					# Really only works on the initial run.
+					if(len(endList) > len(torchbearer.worst)):
+						torchbearer.worst = endList
+					torchbearer.clearSelf()
+					break
+
+				# DARK SPACES!
+				# Currently, we place a torch on the squares with the LOWEST light level.
+				# We need to expand it so it checks ALL squares, to find the best solutions.
+				# For example: the 8x8 trial has the best solutions in a set of pairs, where each coordinate is adjacent to the center squares but diagonally opposite to the other:
+				#		0	0
+				#	T	C	C	0
+				#	0	C	C	T
+				#		0	0
+				# This fills the entire space with light, in the least amount of torches.
+				# As was given to us, though, the whole problem is O(n^3), and that gets out of hand SUPER fast.
+				else:
+					# Iterate twice: once to check for the amount of lowest light levels, the other time to add them.
+					darkList = []
+					lowest = 14
+					for i in torchbearer.currentList:
+						for j in i:
+							if(j < lowest):
+								lowest = j
+					for i,j in enumerate(torchbearer.currentList): # i is index, j is list
+						for a,b in enumerate(j): # a is index, b is number
+							if(b == lowest):
+								darkList.append((a,i))
+				# print(darkList)
+				
+				# COMPLETELY RANDOM DISTRIBUTION
+				# NO SMART CHECKS
+				# NEED ALGORITHM
+				
+				# Check list of dark (light < 8) squares; check if this string of coordinates has already turned out a solution.
+				# If it has, do not continue.
+				tempDarkList = []
+				tempDarkList.extend(darkList)
+				for i in tempDarkList:
+					tryTheseTorches = []
+					tryTheseTorches.extend(torchbearer.currentTorches)
+					tryTheseTorches.append(i)
+					if(sorted(tryTheseTorches) in torchbearer.triedList):
+						darkList.remove(i)
+						
+				if(len(darkList) == 0):
+					print("Already tried this solution.")
+					torchbearer.clearSelf()
+					break
+				
+				rando = random.randint(0, len(darkList) - 1)
+				
+				torchbearer.teleport(agent_host, darkList[rando][0], darkList[rando][1])
+				torchbearer.placeTorch(agent_host)
+				torchbearer.currentTorches.append(torchbearer.position)
+				
+				# Check if the placed torches are either above our suspected control break, or more torches than our worst solution at the very start.
+				# If we end up getting lucky with a 1 torch solution, then we never have to check any higher.
+				# Because of how we iterate initially (off startList), that will rarely happen...
+				# Instead, we get the "baseline" -- if we start at a corner, like most people are inclined to do, what will the "worst" be?
+				if(len(torchbearer.currentTorches) > breaker or (len(torchbearer.worst) > 0 and len(torchbearer.currentTorches) > len(torchbearer.worst))):
+					print("Inefficient choices.")
+					torchbearer.clearSelf()
+					break
+				
+			#DEBUG BREAK
+			#break
+			# print(torchbearer.triedList) 
+			'''
 			
-			# COMPLETELY RANDOM DISTRIBUTION
-			# NO SMART CHECKS
-			# NEED ALGORITHM
+			#															#
+			#						END V 1.0							#
+			#															#
 			
-			# Check list of dark (light < 8) squares; check if this string of coordinates has already turned out a solution.
-			# If it has, do not continue.
-			tempDarkList = []
-			tempDarkList.extend(darkList)
-			for i in tempDarkList:
-				tryTheseTorches = []
-				tryTheseTorches.extend(torchbearer.currentTorches)
-				tryTheseTorches.append(i)
-				if(sorted(tryTheseTorches) in torchbearer.triedList):
-					darkList.remove(i)
-					
-			if(len(darkList) == 0):
-				print("Already tried this solution.")
-				torchbearer.clearSelf()
-				break
 			
-			rando = random.randint(0, len(darkList) - 1)
+			agent_host.sendCommand("quit")
+			time.sleep(0.1)
+		
+		else:
+			lowest = None
+				
+			for i in torchbearer.scoredList: # First iterate to find the lowest score in torchbearer.scoredList and if it contains coordinates.
+				if((lowest == None or i < lowest) and len(torchbearer.scoredList[i]) > 0):
+					lowest = i
+			for i in torchbearer.scoredList[lowest]: # Then iterate over the list of scoredList at the lowest score.
+				torchbearer.bestList.append(i)
+			print("Best Coordinates for grid {}x{}:".format(num,num))
+			for i in torchbearer.bestList:
+				print(i)
+				
+			print("Scores:")
+			for i in torchbearer.scoredList:
+				print("{} dark squares: {}".format(i,torchbearer.scoredList[i]))
+				
+			rando = random.randint(0, len(torchbearer.bestList) - 1)
+			print("Showing possible solution: {}".format(torchbearer.bestList[rando]))
+			for i in torchbearer.bestList[rando]:
+				torchbearer.teleport(agent_host,i[0],i[1])
+				torchbearer.placeTorch(agent_host)
 			
-			torchbearer.teleport(agent_host, darkList[rando][0], darkList[rando][1])
-			torchbearer.placeTorch(agent_host)
-			torchbearer.currentTorches.append(torchbearer.position)
+			agent_host.sendCommand("quit")
+			time.sleep(0.1)
 			
-			# Check if the placed torches are either above our suspected control break, or more torches than our worst solution at the very start.
-			# If we end up getting lucky with a 1 torch solution, then we never have to check any higher.
-			# Because of how we iterate initially (off startList), that will rarely happen...
-			# Instead, we get the "baseline" -- if we start at a corner, like most people are inclined to do, what will the "worst" be?
-			if(len(torchbearer.currentTorches) > breaker or (len(torchbearer.worst) > 0 and len(torchbearer.currentTorches) > len(torchbearer.worst))):
-				print("Inefficient choices.")
-				torchbearer.clearSelf()
-				break
-			
-		#DEBUG BREAK
-		#break
-		# print(torchbearer.triedList) 
-		'''
-		
-		#															#
-		#						END V 1.0							#
-		#															#
-		
-		
-		agent_host.sendCommand("quit")
-		time.sleep(0.1)
-		
-	lowest = None
-		
-	for i in torchbearer.scoredList: # First iterate to find the lowest score in torchbearer.scoredList and if it contains coordinates.
-		if((lowest == None or i < lowest) and len(torchbearer.scoredList[i]) > 0):
-			lowest = i
-	for i in torchbearer.scoredList[lowest]: # Then iterate over the list of scoredList at the lowest score.
-		torchbearer.bestList.extend(i)
-		break
-	print("Best Coordinates:")
-	for i in torchbearer.bestList:
-		print(i)
-		
-	print("Scores:")
-	for i in torchbearer.scoredList:
-		print("{} dark squares: {}".format(i,torchbearer.scoredList[i])
 		'''
 	# Iterate twice: once to check for the lowest length amongst solutions, the other to add them.
 	# print(torchbearer.worst)
