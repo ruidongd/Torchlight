@@ -44,7 +44,8 @@ Our baseline test -- a 6x6 grid -- works like this:
     - The coordinate with the torch updates its number in **"currentList"** to 14 (**"initialNum"**).
     - ![image showing that update here](url)
     - For each coordinate in currentList that is not that coordinate, they update based on their taxicab distance away from the torch. This distance (**"tryNum"**) is equal to their difference in x coordinates + their difference in z coordinates.
-    - ![image showing taxicab distance from Wikipedia article goes here](url)
+    - ![image showing taxicab distance from Wikipedia article goes here](https://upload.wikimedia.org/wikipedia/commons/0/08/Manhattan_distance.svg)
+    (Image By User:Psychonaut - Created by User:Psychonaut with XFig, Public Domain, https://commons.wikimedia.org/w/index.php?curid=731390 )
     - The new light level of that specific coordinate is equal to **"initialNum - tryNum"** unless said light level would be lower than it currently is.
     - ![image showing new light levels goes here](url)
   - After placing all of its torches within the combination it is testing, the agent then "scores" the combination based on how many squares remain in the grid that have a light level of 7 or below. This score is named **"dark"**.
