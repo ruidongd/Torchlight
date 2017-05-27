@@ -5,7 +5,8 @@ title: Status
 
 # Video of Torchbearer in action:
 
-TODO: VIDEO HERE
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mMRRCCdDuCE" frameborder="0" allowfullscreen></iframe>
+(Apologies for the slight static and muffled voice!)
 
 ## Project Summary:
 
