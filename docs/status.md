@@ -98,7 +98,7 @@ A way to break down our problem, as mentioned above, is to use submodular optimi
 - This solution can be further broken down into two rectangles (specifically 3x10 and 3x7), allowing us to only have to worry about 30 and 21 positions and to consider only 1 torch for each grid. 
   - 30C1 and 21C1 (30 and 21...) are even smaller compared to 1275!
 
-This process has to be followed 3 more times (each "corner" of the grid that fits a 7x7 square), for a total of (4 * (30 + 21 + 1)) = 204 solutions to check. Much easier than 1275, and much, much easier than 161700.
+This process has to be followed 3 more times (each "corner" of the grid that fits a 7x7 square), for a total of (4 * (30 + 21 + 1)) = **204** solutions to check. Much easier than 1275, and much, much easier than 161700.
 
 Grid 10x10:
 ![image of 10x10](url)
