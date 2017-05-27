@@ -84,7 +84,7 @@ def GetMissionXML( trial ):
 				</Inventory>
 			</AgentStart>
 			<AgentHandlers>
-			<ContinuousMovementCommands turnSpeedDegs="180"/>
+			<ContinuousMovementCommands turnSpeedDegs="360"/>
 			<MissionQuitCommands quitDescription="quit"/>
 			</AgentHandlers>
 		</AgentSection>
@@ -315,7 +315,7 @@ if __name__ == '__main__':
 
 		agent_host.sendCommand("pitch 1")
 		# print("Trying to look down")
-		time.sleep(1.0)
+		time.sleep(0.5)
 		
 		# Control center torch
 		# torchbearer.teleport(agent_host, center[0], center[1])
