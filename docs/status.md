@@ -23,7 +23,7 @@ Of course, these goals are rather lofty, as there are many more variables to con
 
 The Torchbearer A.I. determines the best locations to place torches in a grid by first determining the minimum amount of torches needed to light up the whole grid, then iterating over an n-sized combination of the valid coordinates of the grid, scoring each combination based on how many squares it left dark.
 
-All of this is done in a brute-force algorithm, iterating over the whole list of n-sized combinations. We are currently working on optimizing the algorithm by breaking the grids into smaller chunks (submodular optimization), but the algorithm works fine for grids sized 7 and below in terms of time taken. Given *enough* time, the A.I. can actually find all solutions to an nXn grid; it just takes a very long while.
+All of this is done with a brute-force method, iterating over the whole list of n-sized combinations. We are currently working on optimizing the algorithm by breaking the grids into smaller chunks (submodular optimization), but the algorithm works fine for grids sized 7 and below in terms of time taken. Given *enough* time, the A.I. can actually find all solutions to an nXn grid; it just takes a very long while.
 
 Our baseline test -- a 6x6 grid -- works like this:
 - The minimum amount of torches is determined by the torches' reach.
