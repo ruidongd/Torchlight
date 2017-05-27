@@ -34,6 +34,7 @@ Our baseline test -- a 6x6 grid -- works like this:
   - After placing the torch, the agent updates what the new light levels of its surroundings should be.
     - The coordinate with the torch updates its number in **"currentList"** to 14 (**"initialNum"**).
     - For each coordinate in currentList that is not that coordinate, they update based on their taxicab distance away from the torch. This distance (**"tryNum"**) is equal to their difference in x coordinates + their difference in z coordinates.
+    - ![image showing taxicab distance from Wikipedia article goes here](url for image goes here)
     - The new light level of that specific coordinate is equal to **"initialNum - tryNum"** unless said light level would be lower than it currently is.
   - After placing all of its torches within the combination it is testing, the agent then "scores" the combination based on how many squares remain in the grid that have a light level of 7 or below. This score is named **"dark"**.
   - The combination is then placed into a dictionary **"scoredList"**, which has a variety of numeric keys and a list value. The combination is appended to the list with key **"dark"**; if that key does not exist, a new key is created with its value containing the combination.
