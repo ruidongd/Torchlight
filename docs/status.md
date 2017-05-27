@@ -23,8 +23,10 @@ Our baseline test -- a 6x6 grid -- works like this:
 - The minimum amount of torches is determined by the torches' reach.
   - In this case: a 6x6 grid fits into a single torch's light.
   - ![image showing square goes here](url for image goes here)
-  - Mathematically, the minimum amount of torches needed is: int(math.floor(number/2)-2). In this case: 6/2 = 3; 3-2 = 1.
-    - This has proven true so far for 9x9 squares and below.
+  - Mathematically, the minimum amount of torches needed is: 
+    - int(math.floor(number/2)-2). 
+  - In this case: 6/2 = 3; 3-2 = 1.
+  - This has proven true so far for 9x9 squares and below.
 - The amount of available combinations (nCr) of coordinates is determined by the minimum torches needed (1) and the amount of spaces (36).
   - In this case: n = 36, r = 1 -> 36 unique 1-sized combinations of coordinates. This list of coordinates is named **"startingList"** for the moment.
 - The agent creates 6 lists, 6-size each, full of 0s to simulate the current light levels of the current test (named **"currentList"**).
