@@ -79,15 +79,6 @@ Eventually, our algorithm can solve that 8x8 square (in fact it is possible to s
 
 While optimization is a major issue, there is no doubt that the program works. The function determining current lighting is simple, only having to iterate over nXn numbers and update them if they would grow brighter. Each test only takes about two seconds of real time, and most of that is on the agent taking a half-second to look down in the Minecraft client and Malmo's "world_state waiting" function that is standard within Malmo projects (the line stating "while not world_state.has_mission_begun" that is in *all* Malmo projects).
 
-Grid 5x5:
-![image of solution 5x5 here](url)
-
-Grid 6x6:
-![image of solution 6x6 here](url)
-
-Grid 7x7:
-![image of solution 7x7 here](url)
-
 ## Remaining Goals and Challenges
 
 Our current goal is optimizing the algorithm. Mathematically the algorithm is sound, but each solution is checked one by one, which quickly becomes inefficient and time-consuming. Checking 1-sized combinations is efficient as we only have to worry about nXm positions (the **m** is an important distinction here, discussed below). 2-sized combinations (8x8 and 9x9) become daunting as all possible combinations become 2016 and 3240, respectively; and a 3-sized combination of a 10x10 grid has 161700 combinations to check!
