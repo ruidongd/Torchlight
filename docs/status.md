@@ -75,7 +75,7 @@ We learned quickly that while the first and second terms were easily accomplishe
 
 Eventually, our algorithm can solve that 8x8 square (in fact it is possible to solve by hand), but it will take an incredibly long time to do so (approximately an hour). Our issue is that it checks every solution and not the best ones (e.g. placing two torches directly next to each other).
 
-![images showing possible solution to 8x8 grid](url)
+![images showing possible solution to 8x8 grid](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/Solution8x8.PNG)
 
 While optimization is a major issue, there is no doubt that the program works. The function determining current lighting is simple, only having to iterate over nXn numbers and update them if they would grow brighter. Each test only takes about two seconds of real time, and most of that is on the agent taking a half-second to look down in the Minecraft client and Malmo's "world_state waiting" function that is standard within Malmo projects (the line stating "while not world_state.has_mission_begun" that is in *all* Malmo projects).
 
@@ -93,10 +93,10 @@ A way to break down our problem, as mentioned above, is to use submodular optimi
 This process has to be followed 3 more times (each "corner" of the grid that fits a 7x7 square), for a total of (4 * (30 + 21 + 1)) = **204** solutions to check. Much easier than 1275, and much, much easier than 161700.
 
 Grid 10x10:
-![image of 10x10](url)
+![image of 10x10](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/10x10Initial.PNG)
 
 Grid 10x10 with 7x7 removed:
-![image of 10x10-7x7](url)
+![image of 10x10-7x7](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/10x10minus7x7.PNG)
 
 Grids 3x10 and 3x7:
-![images of 3x10 and 3x7](url)
+![images of 3x10 and 3x7](https://raw.githubusercontent.com/Raustana/Torchlight/master/docs/images/10x10chopped.PNG)
