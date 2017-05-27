@@ -3,7 +3,7 @@ layout: default
 title: Status
 ---
 
-# VIDEO:
+# Video of Torchbearer in action:
 
 TODO: VIDEO HERE
 
