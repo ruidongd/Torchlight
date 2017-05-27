@@ -38,7 +38,7 @@ Our baseline test -- a 6x6 grid -- works like this:
 - The agent creates 6 lists, 6-size each, full of 0s to simulate the current light levels of the current test (named **"currentList"**).
 - ![image showing initial 0s goes here](url)
 - The list of 36 combinations are then passed to the agent, who places a torch at each coordinate in the combination per test and checks the "score" of that placement:
-  - First, the agent teleports to coordinate (x, z). This torch's coordinate in the **"currentList"** is determined first by its z-level, then by its x-level (so blocks at z-level 2 are in **currentList[1]**; a block at (3, 2) is at **currentList[1][2]**).
+  - First, the agent teleports to coordinate (x, z). This torch's coordinate in the **"currentList"** is determined first by its z-level, then by its x-level (so blocks at z-level 1 are in **currentList[1]**; a block at (1, 2) is at **currentList[1][2]**).
   - Then, the agent places a torch at its current position (x, z), in the Minecraft world.
   - After placing the torch, the agent updates what the new light levels of its surroundings should be.
     - The coordinate with the torch updates its number in **"currentList"** to 14 (**"initialNum"**).
