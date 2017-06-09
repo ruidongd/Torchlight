@@ -139,10 +139,42 @@ class Torchbearer(object):
 		
 		# scoredList: a dictionary of "scores" and their coordinates. The score is calculated based on how many squares are lit up.
 		
+	def compareToCenter(self, a,b, center):
+		# First, br
+		if(a[0] < center and b[0] < center and a[1] < center and b[1] < center):
+			return True
+		# Now, tr
+		elif(a[0] < center and b[0] < center and a[1] > center and b[1] > center):
+			return True
+		# Now, bl
+		elif(a[0] > center and b[0] > center and a[1] < center and b[1] < center):
+			return True
+		# Now, tl
+		elif(a[0] > center and b[0] > center and a[1] > center and b[1] > center):
+			return True
+		else:
+			return False
+
 	def doableList(self, doable, startingList):
 		# Creates a list of all combinations in len(startingList) C doable (as an nCr function)
 		
 		# TODO: Start at the center and move outwards.
+		
+		# for i in center:
+			# if i[0] < ((self.trial-1)/2):
+				# if i[1] < ((self.trial-1)/2):
+					# check.append((i[0]-1,i[1]))
+					# check.append((i[0],i[1]-1))
+				# else:
+					# check.append((i[0]-1,i[1]))
+					# check.append((i[0],i[1]+1))
+			# else:
+				# if i[1] < ((self.trial-1/2)):
+					# check.append((i[0]+1,i[1]))
+					# check.append((i[0],i[1]-1))
+				# else:
+					# check.append((i[0]+1,i[1]))
+					# check.append((i[0],i[1]+1))
 		
 		retList = []
 		for i in itertools.combinations(startingList,doable):
