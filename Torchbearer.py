@@ -10,126 +10,6 @@ import errno
 import itertools # This is rather important for combinatorial work.
 from timeit import default_timer as timer
 
-<<<<<<< HEAD
-trial6x6 =  '''
-                <DrawingDecorator>
-                    <DrawCuboid x1="0" y1="39" z1="0" x2="5" y2="39" z2="5" type="obsidian"/>
-                </DrawingDecorator>
-            '''
-
-trial8x8 =  '''
-                <DrawingDecorator>
-                    <DrawCuboid x1="0" y1="39" z1="0" x2="7" y2="39" z2="7" type="obsidian"/>
-                </DrawingDecorator>
-            '''
-
-trial10x10 =    '''
-                <DrawingDecorator>
-                    <DrawCuboid x1="0" y1="39" z1="0" x2="9" y2="39" z2="9" type="obsidian"/>
-                </DrawingDecorator>
-            '''
-
-def GetMissionXML( trial ):
-    # generatorString = 2;0;127; for MC v1.7 and below
-
-    return
-    '''
-        <?xml version="1.0" encoding="UTF-8" ?>
-        <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <About>
-            <Summary>Light the way!</Summary>
-        </About>
-        <ServerSection>
-                <ServerInitialConditions>
-                    <Time>
-                        <StartTime>14000</StartTime>
-                        <AllowPassageOfTime>false</AllowPassageOfTime>
-                    </Time>
-                    <Weather>clear</Weather>
-                 </ServerInitialConditions>
-                 <ServerHandlers>
-                      <FlatWorldGenerator generatorString="3;minecraft:air;127;"/>
-                      ''' + trial + '''
-                      <ServerQuitFromTimeUp timeLimitMs="30000"/>
-                      <ServerQuitWhenAnyAgentFinishes/>
-                    </ServerHandlers>
-                 </ServerSection>
-
-                 <AgentSection mode="Creative">
-                    <Name>Torchbearer</Name>
-                    <AgentStart>
-                        <Placement x="0" y="40" z="0"/>
-                        <Inventory>
-                            <InventoryItem slot="0" type="torch"/>
-                        </Inventory>
-                    </AgentStart>
-                    <AgentHandlers>
-                      <ObservationFromFullStats/>
-                      <ObservationFromGrid>
-                          <Grid name="floor11x11">
-                            <min x="-5" y="-1" z="-5"/>
-                            <max x="5" y="-1" z="5"/>
-                          </Grid>
-                      </ObservationFromGrid>
-                      <ContinuousMovementCommands turnSpeedDegs="180"/>
-                      <InventoryCommands/>
-                    </AgentHandlers>
-                  </AgentSection>
-                </Mission>'''
-
-def placeTorch():
-    agent_host.sendCommand("use 1")
-    time.sleep(0.1)
-    agent_host.sendCommand("use 0")
-
-def findCenter(x, z):
-    retX = math.floor(x/2)
-    retZ = math.floor(z/2)
-    return (retX, retZ)
-
-def teleport(self, agent_host, teleport_x, teleport_z):
-    """Directly teleport to a specific position."""
-    tp_command = "tp " + str(teleport_x)+ " 40 " + str(teleport_z)
-    agent_host.sendCommand(tp_command)
-    good_frame = False
-    # start = timer()
-    while not good_frame:
-        world_state = agent_host.getWorldState()
-        if not world_state.is_mission_running:
-            print ("Mission ended prematurely - error.")
-            exit(1)
-        if not good_frame and world_state.number_of_video_frames_since_last_state > 0:
-            frame_x = world_state.video_frames[-1].xPos
-            frame_z = world_state.video_frames[-1].zPos
-            if math.fabs(frame_x - teleport_x) < 0.001 and math.fabs(frame_z - teleport_z) < 0.001:
-                good_frame = True
-                # end_frame = timer()
-
-
-# def recur_place_torch(self, l, num, num_of_torch):
-#   if all(l[row][col] >= 8 for row in num for col in num):
-#       return
-
-#   for row in range(num):
-#       for col in range(num):
-#           if l[row][col] < 8:
-#               # teleport(row, col)
-#               # temp = l
-#               # update_list()
-#               # recur_place_torch(self, l, num, num_of_torch+1)
-#               # remove_torch()
-#               # l = temp
-
-def update_list(self, l, row, col, num):
-    l[row][col] = 14
-
-    for r in range(num):
-        for c in range(num):
-            temp = max(14-abs(row-r)-abs(col-c),0)
-            l[r][c] =  temp if l[r][c] < temp else l[r][c]
-
-
-=======
 trial6x6 = 	'''
 	<DrawingDecorator>
 		<DrawCuboid x1="0" y1="40" z1="0" x2="15" y2="40" z2="15" type="air"/>
@@ -210,7 +90,6 @@ def GetMissionXML( trial ):
 		</AgentSection>
 
 	</Mission>'''
->>>>>>> Raustana/master
 
 
 class Torchbearer(object):
@@ -221,9 +100,6 @@ class Torchbearer(object):
 		Args:
 			trialsize:	<int>	The size of the square that the AI will iterate over, as an nXn square.
 		"""
-<<<<<<< HEAD
-
-=======
 
 		# Doable: the minimum amount of torches needed to fill up a num by num space.
 		# Because torches light up 14 on their own square and taxi cab downwards...
@@ -246,7 +122,6 @@ class Torchbearer(object):
 
 		self.doable = int(math.floor(trialsize/2)-2)
 
->>>>>>> Raustana/master
 		# NOTE: A majority of this code is deprecated, but remains as a back up if our new code fails.
 		# See "V 1.0" at the bottom.
 
@@ -268,7 +143,7 @@ class Torchbearer(object):
 		self.trial = trialsize
 		self.currentTorches = []
 		self.worst = []
-        self.centerX, self.centerZ = self.findCenter(trialsize, trialsize)
+
 		# Create a dict of scores --
 		self.scoredList = dict()
 
@@ -283,8 +158,6 @@ class Torchbearer(object):
 		#worst = the longest list of tuples in triedList so far.
 
 		# scoredList: a dictionary of "scores" and their coordinates. The score is calculated based on how many squares are lit up.
-<<<<<<< HEAD
-=======
 
 	def compareToCenter(self, a,b, center):
 		# First, br
@@ -308,16 +181,10 @@ class Torchbearer(object):
         return max(abs(target[0] - self.centerX), abs(target[1] - self.centerZ))
 
 
->>>>>>> Raustana/master
-
 	def doableList(self, doable, startingList):
 		# Creates a list of all combinations in len(startingList) C doable (as an nCr function)
 
 		# TODO: Start at the center and move outwards.
-
-<<<<<<< HEAD
-
-=======
 
 		# for i in center:
 			# if i[0] < ((self.trial-1)/2):
@@ -335,11 +202,17 @@ class Torchbearer(object):
 					# check.append((i[0]+1,i[1]))
 					# check.append((i[0],i[1]+1))
 
->>>>>>> Raustana/master
 		retList = []
-		for i in itertools.combinations(startingList,doable):
-			if(sorted(list(i)) not in retList):
-				retList.append(sorted(list(i)))
+        # <<<< Raustana
+		# for i in itertools.combinations(startingList,doable):
+		# 	if(sorted(list(i)) not in retList):
+		# 		retList.append(sorted(list(i)))
+        # <<<< Ruidong
+        # Reduce the time space from O(N^2) to O(N)
+        # compare function is the algorithm we used in updateList function
+        for i in itertools.combinations(sorted(startingList, key = lambda x : compare(x)), doable):
+            if i not in retList:
+                retList.append(i)
 		return retList
 
 	def updateLists(self):
@@ -396,71 +269,6 @@ class Torchbearer(object):
 			self.currentList.append([0]*self.trial)
 		self.currentTorches = []
 
-<<<<<<< HEAD
-for iRepeat in range(num_reps):
-    #Allowed trials: trial6x6, trial8x8, trial10x10
-    trial = trial6x6;
-
-    my_mission = MalmoPython.MissionSpec(GetMissionXML(trial), True)
-    my_mission_record = MalmoPython.MissionRecordSpec()
-
-    num = 0
-
-    if trial == trial6x6:
-        num = 6
-    elif trial == trial8x8:
-        num = 8
-    elif trial == trial10x10:
-        num = 10
-
-    aList = []
-    for i in range(num):
-        aList.append([0]*num)
-
-    # Attempt to start a mission:
-    max_retries = 3
-    for retry in range(max_retries):
-        try:
-            agent_host.startMission( my_mission, my_mission_record )
-            break
-        except RuntimeError as e:
-            if retry == max_retries - 1:
-                print "Error starting mission:",e
-                exit(1)
-            else:
-                time.sleep(2)
-
-    # Loop until mission starts:
-    print "Waiting for the mission to start ",
-    world_state = agent_host.getWorldState()
-    while not world_state.has_mission_begun:
-        sys.stdout.write(".")
-        time.sleep(0.1)
-        world_state = agent_host.getWorldState()
-        for error in world_state.errors:
-            print "Error:",error.text
-
-    print
-    print "Mission running ",
-
-
-    while world_state.is_mission_running:
-        break
-
-        # sys.stdout.write(".")
-        # #time.sleep(0.1)
-        # agent_host.sendCommand("pitch 1")
-        # time.sleep(1.0)
-        # world_state = agent_host.getWorldState()
-        # for error in world_state.errors:
-        #   print "Error:",error.text
-        # if world_state.number_of_observations_since_last_state > 0:   # Have any observations come in?
-        #   msg = world_state.observations[-1].text                     # Yes, so get the text
-        #   observations = json.loads(msg)                              # and parse the JSON
-        #   grid = observations.get(u'floor11x11', 0)                   # and get the grid we asked for
-
-
-=======
 # Create default Malmo objects:
 if __name__ == '__main__':
 	# For consistent results -- UNCOMMENT
@@ -488,31 +296,7 @@ if __name__ == '__main__':
 	trial = CreateTrial(num, (0,0))
 	#
 	#
-<<<<<<< HEAD
 
-	# Doable: the minimum amount of torches needed to fill up a num by num space.
-	# Because torches light up 14 on their own square and taxi cab downwards...
-	# ... if we start in the center of a 7x7 matrix:
-
-	#	8	9	10	11
-	#	9	10	11	12
-	#	10	11	12	13
-	#	11	12	13	14	13	12	11
-	#				13	12
-	#				12		10
-	#				11			8
-
-	# The same goes for a 6x6 matrix onwards.
-	# If you make an 8x8 or 9x9 matrix, you require 2 torches.
-	# If you make a 10x10 or 11x11 matrix, you require 3.
-	# And so on.
-
-	# Essentially: take your nXn matrix, divide by 2, round down, subtract 2, and that's how much your doable is.
-
-	doable = 0
-=======
-
->>>>>>> Raustana/master
 	if(trial == trial6x6):
 		num = 6
 	elif(trial == trial8x8):
@@ -520,10 +304,6 @@ if __name__ == '__main__':
 	elif(trial == trial10x10):
 		num = 10
 
-<<<<<<< HEAD
-	doable = int(math.floor(num/2)-2)
-=======
->>>>>>> Raustana/master
 	num_reps = min(num**2, 500) + 1
 	# num_reps = 10
 
@@ -626,8 +406,6 @@ if __name__ == '__main__':
 
 			# The current run's torchbearing.
 			while True:
-                dark = True if any(pos < 8 for pos in l for l in torchbearer.currentList) else False
-                # one line version for following code
 				dark = False;
 				for i in torchbearer.currentList:
 					for j in i:
@@ -777,5 +555,3 @@ if __name__ == '__main__':
 	for i in torchbearer.bestList:
 		print(i)
 		'''
-
->>>>>>> Raustana/master
