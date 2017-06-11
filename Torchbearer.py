@@ -214,15 +214,39 @@ def GetMissionXML( trial ):
 
 
 class Torchbearer(object):
-	def __init__(self, trialsize, doable):
+	def __init__(self, trialsize):
 		"""
 		Create Torchbearer AI, with empty lists of coordinates.
 
 		Args:
 			trialsize:	<int>	The size of the square that the AI will iterate over, as an nXn square.
-			doable:		<int>	The minimum amount of torches the trial can be done in.
 		"""
+<<<<<<< HEAD
 
+=======
+
+		# Doable: the minimum amount of torches needed to fill up a num by num space.
+		# Because torches light up 14 on their own square and taxi cab downwards...
+		# ... if we start in the center of a 7x7 matrix:
+
+		#	8	9	10	11
+		#	9	10	11	12
+		#	10	11	12	13
+		#	11	12	13	14	13	12	11
+		#				13	12
+		#				12		10
+		#				11			8
+
+		# The same goes for a 6x6 matrix onwards.
+		# If you make an 8x8 or 9x9 matrix, you require 2 torches.
+		# If you make a 10x10 or 11x11 matrix, you require 3.
+		# And so on.
+
+		# Essentially: take your nXn matrix, divide by 2, round down, subtract 2, and that's how much your doable is.
+
+		self.doable = int(math.floor(trialsize/2)-2)
+
+>>>>>>> Raustana/master
 		# NOTE: A majority of this code is deprecated, but remains as a back up if our new code fails.
 		# See "V 1.0" at the bottom.
 
@@ -244,7 +268,7 @@ class Torchbearer(object):
 		self.trial = trialsize
 		self.currentTorches = []
 		self.worst = []
-
+        self.centerX, self.centerZ = self.findCenter(trialsize, trialsize)
 		# Create a dict of scores --
 		self.scoredList = dict()
 
@@ -259,12 +283,59 @@ class Torchbearer(object):
 		#worst = the longest list of tuples in triedList so far.
 
 		# scoredList: a dictionary of "scores" and their coordinates. The score is calculated based on how many squares are lit up.
+<<<<<<< HEAD
+=======
+
+	def compareToCenter(self, a,b, center):
+		# First, br
+		if(a[0] < center and b[0] < center and a[1] < center and b[1] < center):
+			return True
+		# Now, tr
+		elif(a[0] < center and b[0] < center and a[1] > center and b[1] > center):
+			return True
+		# Now, bl
+		elif(a[0] > center and b[0] > center and a[1] < center and b[1] < center):
+			return True
+		# Now, tl
+		elif(a[0] > center and b[0] > center and a[1] > center and b[1] > center):
+			return True
+		else:
+			return False
+
+    def compare(self, target):
+        # Ranked the girds, given the a low index to the grids that are close to center, a high index to outside grids.
+        # Usage sort(list, key = lambda x : compare(x))
+        return max(abs(target[0] - self.centerX), abs(target[1] - self.centerZ))
+
+
+>>>>>>> Raustana/master
 
 	def doableList(self, doable, startingList):
 		# Creates a list of all combinations in len(startingList) C doable (as an nCr function)
 
 		# TODO: Start at the center and move outwards.
 
+<<<<<<< HEAD
+
+=======
+
+		# for i in center:
+			# if i[0] < ((self.trial-1)/2):
+				# if i[1] < ((self.trial-1)/2):
+					# check.append((i[0]-1,i[1]))
+					# check.append((i[0],i[1]-1))
+				# else:
+					# check.append((i[0]-1,i[1]))
+					# check.append((i[0],i[1]+1))
+			# else:
+				# if i[1] < ((self.trial-1/2)):
+					# check.append((i[0]+1,i[1]))
+					# check.append((i[0],i[1]-1))
+				# else:
+					# check.append((i[0]+1,i[1]))
+					# check.append((i[0],i[1]+1))
+
+>>>>>>> Raustana/master
 		retList = []
 		for i in itertools.combinations(startingList,doable):
 			if(sorted(list(i)) not in retList):
@@ -417,6 +488,7 @@ if __name__ == '__main__':
 	trial = CreateTrial(num, (0,0))
 	#
 	#
+<<<<<<< HEAD
 
 	# Doable: the minimum amount of torches needed to fill up a num by num space.
 	# Because torches light up 14 on their own square and taxi cab downwards...
@@ -438,6 +510,9 @@ if __name__ == '__main__':
 	# Essentially: take your nXn matrix, divide by 2, round down, subtract 2, and that's how much your doable is.
 
 	doable = 0
+=======
+
+>>>>>>> Raustana/master
 	if(trial == trial6x6):
 		num = 6
 	elif(trial == trial8x8):
@@ -445,12 +520,15 @@ if __name__ == '__main__':
 	elif(trial == trial10x10):
 		num = 10
 
+<<<<<<< HEAD
 	doable = int(math.floor(num/2)-2)
+=======
+>>>>>>> Raustana/master
 	num_reps = min(num**2, 500) + 1
 	# num_reps = 10
 
 	# Initialize torchbearer with trial size (num)
-	torchbearer = Torchbearer(num, doable)
+	torchbearer = Torchbearer(num)
 	print("Trial size: {} x {}".format(num, num))
 	# Initialize breaking point, where there's "too many torches"
 	breaker = 10
