@@ -132,15 +132,16 @@ class Torchbearer(object):
 			self.currentList.append([0]*trialsize)
 			for j in range(trialsize):
 				self.startList.append((i,j))
+				
+		self.trial = trialsize
 
-		self.startList = self.doableList(doable, self.startList) # Create a list of coordinates to do. DOES NOT WORK WITH V 1.0.
+		self.startList = self.doableList(self.doable, self.startList) # Create a list of coordinates to do. DOES NOT WORK WITH V 1.0.
 
 		self.triedList = []
 		self.bestList = []
 
 		self.position = (0,0)
 
-		self.trial = trialsize
 		self.currentTorches = []
 		self.worst = []
 
@@ -175,12 +176,12 @@ class Torchbearer(object):
 		else:
 			return False
 
-    def compare(self, target):
-        # Ranked the girds, given the a low index to the grids that are close to center, a high index to outside grids.
-        # Usage sort(list, key = lambda x : compare(x))
-        return max(abs(target[0] - self.centerX), abs(target[1] - self.centerZ))
-
-
+	def compare(self, target):
+		# Ranked the girds, given the a low index to the grids that are close to center, a high index to outside grids.
+		# Usage sort(list, key = lambda x : compare(x))
+		center = self.findCenter(self.trial, self.trial)
+		return max(abs(target[0] - center[0]), abs(target[1] - center[1]))
+		
 	def doableList(self, doable, startingList):
 		# Creates a list of all combinations in len(startingList) C doable (as an nCr function)
 
@@ -210,9 +211,9 @@ class Torchbearer(object):
         # <<<< Ruidong
         # Reduce the time space from O(N^2) to O(N)
         # compare function is the algorithm we used in updateList function
-        for i in itertools.combinations(sorted(startingList, key = lambda x : compare(x)), doable):
-            if i not in retList:
-                retList.append(i)
+		for i in itertools.combinations(sorted(startingList, key = lambda x : self.compare(x)), doable):
+			if i not in retList:
+				retList.append(i)
 		return retList
 
 	def updateLists(self):
