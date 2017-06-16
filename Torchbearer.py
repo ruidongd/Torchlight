@@ -209,25 +209,30 @@ class Torchbearer(object):
 		# 		retList.append(sorted(list(i)))
         # <<<< Ruidong
         # Reduce the time space from O(N^2) to O(N)
-        # compare function is the algorithm we used in updateList function
+        # compare function is the algorithm(Taxcab distance) we used in updateList function
         for i in itertools.combinations(sorted(startingList, key = lambda x : compare(x)), doable):
             if i not in retList:
                 retList.append(i)
 		return retList
 
+
 	def updateLists(self):
 		# Updates the set of lists by placing a torch at the CURRENT POSITION.
+		# Return the number of new lighted up area
 		initialNum = 14 # Torch light level = 0
+		count = 0
 		for i,j in enumerate(self.currentList): # i = index of y; j = list at y
 			disY = abs(self.position[1] - i)
 			for a,b in enumerate(j): # a = index of x; b = number at x
 				disX = abs(self.position[0] - a)
-				tryNum = initialNum - (disX + disY) # Taxi Cab distance
+				tryNum = initialNum - (disX + disY) # Taxicab distance
 				if(b > 14): # WALL IMPLEMENTATION
 					break
 				elif(b < tryNum): # The coordinate is closer than 14 squares away, but is darker than it would be if a torch was placed down.
 					j[a] = tryNum
-		return
+					count += 1 if tryNum >= 8 else 0
+
+		return count
 
 	def placeTorch(self, agent_host):
 		# Places torch down in game world; does not affect algorithm.
