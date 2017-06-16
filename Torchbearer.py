@@ -132,15 +132,16 @@ class Torchbearer(object):
 			self.currentList.append([0]*trialsize)
 			for j in range(trialsize):
 				self.startList.append((i,j))
+				
+		self.trial = trialsize
 
-		self.startList = self.doableList(doable, self.startList) # Create a list of coordinates to do. DOES NOT WORK WITH V 1.0.
+		self.startList = self.doableList(self.doable, self.startList) # Create a list of coordinates to do. DOES NOT WORK WITH V 1.0.
 
 		self.triedList = []
 		self.bestList = []
 
 		self.position = (0,0)
 
-		self.trial = trialsize
 		self.currentTorches = []
 		self.worst = []
 
@@ -175,12 +176,12 @@ class Torchbearer(object):
 		else:
 			return False
 
-    def compare(self, target):
-        # Ranked the girds, given the a low index to the grids that are close to center, a high index to outside grids.
-        # Usage sort(list, key = lambda x : compare(x))
-        return max(abs(target[0] - self.centerX), abs(target[1] - self.centerZ))
-
-
+	def compare(self, target):
+		# Ranked the girds, given the a low index to the grids that are close to center, a high index to outside grids.
+		# Usage sort(list, key = lambda x : compare(x))
+		center = self.findCenter(self.trial, self.trial)
+		return max(abs(target[0] - center[0]), abs(target[1] - center[1]))
+		
 	def doableList(self, doable, startingList):
 		# Creates a list of all combinations in len(startingList) C doable (as an nCr function)
 
@@ -209,10 +210,17 @@ class Torchbearer(object):
 		# 		retList.append(sorted(list(i)))
         # <<<< Ruidong
         # Reduce the time space from O(N^2) to O(N)
+<<<<<<< HEAD
         # compare function is the algorithm(Taxcab distance) we used in updateList function
         for i in itertools.combinations(sorted(startingList, key = lambda x : compare(x)), doable):
             if i not in retList:
                 retList.append(i)
+=======
+        # compare function is the algorithm we used in updateList function
+		for i in itertools.combinations(sorted(startingList, key = lambda x : self.compare(x)), doable):
+			if i not in retList:
+				retList.append(i)
+>>>>>>> Raustana/master
 		return retList
 
 
@@ -294,7 +302,7 @@ if __name__ == '__main__':
 		print agent_host.getUsage()
 		exit(0)
 
-	num = 6
+	num = 8
 	#
 	#
 	#Allowed preset trials: trial6x6, trial8x8, trial10x10
@@ -309,8 +317,10 @@ if __name__ == '__main__':
 	elif(trial == trial10x10):
 		num = 10
 
-	num_reps = min(num**2, 500) + 1
-	# num_reps = 10
+	if(num > 7):
+		num_reps = min(num**2, 500) + 1
+	else:
+		num_reps = 10
 
 	# Initialize torchbearer with trial size (num)
 	torchbearer = Torchbearer(num)
@@ -324,7 +334,8 @@ if __name__ == '__main__':
 		my_mission_record = MalmoPython.MissionRecordSpec()
 		my_mission.allowAllAbsoluteMovementCommands()
 		my_mission.requestVideo(800, 500)
-		my_mission.setViewpoint(0)
+		my_mission.setViewpoint(1)
+		my_mission.startAtWithPitchAndYaw(0, 40, 0, 0, 90)
 
 
 		# Attempt to start a mission:
@@ -362,7 +373,7 @@ if __name__ == '__main__':
 
 		agent_host.sendCommand("pitch 1")
 		# print("Trying to look down")
-		time.sleep(0.5)
+		time.sleep(0.25)
 
 		# Control center torch
 		# torchbearer.teleport(agent_host, center[0], center[1])
