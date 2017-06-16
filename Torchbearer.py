@@ -290,7 +290,7 @@ if __name__ == '__main__':
 		print agent_host.getUsage()
 		exit(0)
 
-	num = 6
+	num = 8
 	#
 	#
 	#Allowed preset trials: trial6x6, trial8x8, trial10x10
@@ -305,8 +305,10 @@ if __name__ == '__main__':
 	elif(trial == trial10x10):
 		num = 10
 
-	num_reps = min(num**2, 500) + 1
-	# num_reps = 10
+	if(num > 7):
+		num_reps = min(num**2, 500) + 1
+	else:
+		num_reps = 10
 
 	# Initialize torchbearer with trial size (num)
 	torchbearer = Torchbearer(num)
@@ -320,7 +322,8 @@ if __name__ == '__main__':
 		my_mission_record = MalmoPython.MissionRecordSpec()
 		my_mission.allowAllAbsoluteMovementCommands()
 		my_mission.requestVideo(800, 500)
-		my_mission.setViewpoint(0)
+		my_mission.setViewpoint(1)
+		my_mission.startAtWithPitchAndYaw(0, 40, 0, 0, 90)
 
 
 		# Attempt to start a mission:
@@ -358,7 +361,7 @@ if __name__ == '__main__':
 
 		agent_host.sendCommand("pitch 1")
 		# print("Trying to look down")
-		time.sleep(0.5)
+		time.sleep(0.25)
 
 		# Control center torch
 		# torchbearer.teleport(agent_host, center[0], center[1])
